@@ -1,7 +1,9 @@
-import ui
 import ansi
 import ansi.cursor
 import ansi.colour.fg
+
+import ui
+import processing
 
 class WelcomeScreen(ui.TabbedScreen):
     def __init__(self):
@@ -36,12 +38,21 @@ class WelcomeScreen(ui.TabbedScreen):
             print("  File to log output to:")
 
             print(ansi.cursor.goto(3, 28), end = "")
-            input()
+            
+            executable = input()
 
             print(ansi.cursor.goto(3, 1) + " ", end = "")
             print(ansi.cursor.goto(4, 1) + ">", end = "")
             print(ansi.cursor.goto(4, 28), end = "")
-            input()
+            
+            outputFile = input()
 
-            ui.setBottomLineError("James hasn't gotten around to coding this bit yet")
-            print(ansi.cursor.goto(6, 1), end = "")
+            newProcess = processing.Process(executable, outputFile)
+
+            try:
+                newProcess.start()
+
+                processing.processes.append(newProcess)
+            except FileNotFoundError:
+                ui.setBottomLineError("Cannot find executable at given path")
+                print(ansi.cursor.goto(6, 1), end = "")
