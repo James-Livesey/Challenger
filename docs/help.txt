@@ -1,0 +1,34 @@
+
+                                Challenger Help
+
+    *   Use the Up and Down arrow keys to scroll this help document.
+    *   Press Enter to launch a process for Challenger to inspect.
+        Challenger will then ask you for the process's path and a filename
+        to write the process's output to.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dapibus nunc in
+ligula luctus congue. Sed nec egestas odio, vitae consectetur lorem. Sed
+tincidunt, ligula ac convallis faucibus, enim nibh ultricies metus, vel gravida
+erat erat eu turpis. Morbi feugiat lacus dui, vel semper arcu feugiat non. Duis
+id mollis dui, vel consequat nulla. Nullam in convallis velit. In facilisis
+turpis id nibh iaculis commodo et quis justo. Aenean et dui semper, imperdiet
+turpis eget, finibus magna. Pellentesque eget ultrices mi, non tristique nisi.
+Sed porta non nunc sed egestas.
+
+Maecenas vel justo convallis, interdum risus vitae, malesuada mi. Nunc nec velit
+rhoncus, fringilla quam in, pharetra risus. Praesent interdum felis vel risus
+consequat, eu ultricies diam placerat. Proin lobortis, dui id finibus laoreet,
+erat nunc egestas risus, quis dictum nisi nibh a est. Aliquam vitae sagittis
+orci. Aliquam aliquam sed nulla nec porta. Fusce viverra metus efficitur lectus
+lacinia interdum.
+
+In sit amet nulla urna. Etiam pulvinar tellus nec lorem scelerisque, eu rutrum
+sem molestie. Proin eu massa mi. Ut ullamcorper lobortis egestas. Phasellus
+luctus, est eget ornare varius, arcu felis gravida ex, id malesuada velit purus
+non ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
+cubilia curae; Nullam tortor purus, finibus laoreet odio eget, fringilla
+ultrices diam. Sed in metus elit. Nam in auctor nisl. Aenean non justo est.
+Curabitur sagittis metus purus, et fringilla urna ultrices rhoncus. Proin sit
+amet fermentum nulla. Sed rhoncus viverra leo non rhoncus. Donec egestas sapien
+mi, eget aliquam metus viverra ut. Curabitur rhoncus ultricies tellus, et
+pharetra ipsum egestas non.

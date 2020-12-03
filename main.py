@@ -1,7 +1,5 @@
-import ui
+import screens
 
-print(ui.terminalSize)
+welcomeScreen = screens.WelcomeScreen()
 
-ui.init()
-ui.setTopLineTabs(["Hello", "There", "Hi"], 0)
-print("")
+welcomeScreen.start()
