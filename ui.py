@@ -14,10 +14,10 @@ terminalSize = {
 }
 
 class arrowKeys:
-    UP = "\x1b[A"
-    DOWN = "\x1b[B"
-    LEFT = "\x1b[D"
-    RIGHT = "\x1b[C"
+    UP = "\x1B[A"
+    DOWN = "\x1B[B"
+    LEFT = "\x1B[D"
+    RIGHT = "\x1B[C"
 
 def init():
     print(ansi.cursor.erase(2), end = "")
@@ -36,6 +36,18 @@ def setTopLineTabs(tabs, selectedTab = 0, page = "Challenger"):
 
     print(ansi.cursor.goto(1, 1) + ansi.colour.bg.blue(ansi.colour.fg.boldwhite(page) + ansi.colour.bg.blue(" ") + tabString))
 
+def setBottomLineStatus(status):
+    print(ansi.cursor.goto(terminalSize["height"], 1), end = "")
+    print(ansi.colour.bg.blue(ansi.colour.fg.white(" " * terminalSize["width"])), end = "")
+
+    print(ansi.cursor.goto(terminalSize["height"]) + ansi.colour.bg.blue(ansi.colour.fg.white(status[:terminalSize["width"]])) + ansi.cursor.goto(terminalSize["height"] - 2))
+
+def setBottomLineError(status):
+    print(ansi.cursor.goto(terminalSize["height"], 1), end = "")
+    print(ansi.colour.bg.red(ansi.colour.fg.white(" " * terminalSize["width"])), end = "")
+
+    print(ansi.cursor.goto(terminalSize["height"]) + ansi.colour.bg.red(ansi.colour.fg.white(status[:terminalSize["width"]])) + ansi.cursor.goto(terminalSize["height"] - 2))
+
 def getKey(timeout = 1):
     fileno = sys.stdin.fileno()
     old = termios.tcgetattr(fileno)
@@ -43,7 +55,7 @@ def getKey(timeout = 1):
     try:
         tty.setraw(fileno)
 
-        i, o, e = select.select([sys.stdin], [], [], timeout)
+        i = select.select([sys.stdin], [], [], timeout)[0]
 
         if i:
             char = sys.stdin.read(1)

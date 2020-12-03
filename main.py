@@ -1,5 +1,10 @@
+import ansi.cursor
+
 import screens
 
-welcomeScreen = screens.WelcomeScreen()
+try:
+    welcomeScreen = screens.WelcomeScreen()
 
-welcomeScreen.start()
+    welcomeScreen.start()
+except KeyboardInterrupt:
+    print(ansi.cursor.goto(1, 1) + ansi.cursor.erase(0), end = "")
