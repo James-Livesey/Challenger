@@ -1,4 +1,5 @@
 import subprocess
+import pathlib
 
 processes = []
 
@@ -10,6 +11,8 @@ class Process:
         self.runningProcess = None
     
     def start(self):
+        pathlib.Path(self.outputFile).parent.mkdir(parents = True, exist_ok = True)
+
         self.runningProcess = subprocess.Popen(self.executable, stdout = open(self.outputFile, "wb"))
     
     def stop(self):
