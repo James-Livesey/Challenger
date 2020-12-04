@@ -53,6 +53,39 @@ class WelcomeScreen(ui.TabbedScreen):
                 newProcess.start()
 
                 processing.processes.append(newProcess)
+
+                runningProcessScreen = RunningProcessScreen(newProcess)
+
+                runningProcessScreen.start()
             except FileNotFoundError:
                 ui.setBottomLineError("Cannot find executable at given path")
                 print(ansi.cursor.goto(6, 1), end = "")
+
+class RunningProcessScreen(ui.TabbedScreen):
+    def __init__(self, process):
+        super().__init__(["Status", "Data", "Graph"], 0, "Process")
+
+        self.process = process
+        self.page = self.process.getShortName()
+        self._lastProcessRead = ""
+    
+    def updateTab(self, isChange = False):
+        super().updateTab(isChange)
+
+        if self.selectedTab == 1:
+            processRead = self.process.read().decode().split("\n")
+
+            self.scrollPos = ui.scrollable(processRead, scrollPos = self.scrollPos)
+
+            self._lastProcessRead = processRead
+    
+    def update(self, key):
+        super().update(key)
+
+        processRead = self.process.read().decode().split("\n")
+
+        if processRead != self._lastProcessRead:
+            if self.selectedTab == 1:
+                self.scrollPos = ui.scrollable(processRead, scrollPos = self.scrollPos)
+
+            self._lastProcessRead = processRead

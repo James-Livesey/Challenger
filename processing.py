@@ -12,6 +12,11 @@ class Process:
     def start(self):
         self.runningProcess = subprocess.Popen(self.executable, stdout = open(self.outputFile, "wb"))
     
+    def stop(self):
+        self.runningProcess.kill()
+
+        self.runningProcess = None
+    
     def read(self):
         outputFileOpen = open(self.outputFile, "rb")
         outputFileData = outputFileOpen.read()
@@ -19,3 +24,6 @@ class Process:
         outputFileOpen.close()
 
         return outputFileData
+    
+    def getShortName(self):
+        return self.executable.split("/")[-1]

@@ -79,8 +79,6 @@ def middle(text):
     return " " * (terminalSize["width"] // 2 - len(text) // 2) + text
 
 def scrollable(items, y = 2, height = terminalSize["height"] - 2, scrollPos = 0):
-    print("Scroll:", scrollPos)
-
     if scrollPos < 0:
         scrollPos = 0
     
@@ -124,6 +122,7 @@ class TabbedScreen(Screen):
 
         self.tabs = tabs
         self.selectedTab = selectedTab
+        self.page = page
 
         self._previouslySelectedTab = None
 
@@ -134,7 +133,7 @@ class TabbedScreen(Screen):
         if isChange:
             self.scrollPos = 0
 
-        setTopLineTabs(self.tabs, self.selectedTab)
+        setTopLineTabs(self.tabs, self.selectedTab, self.page)
         print(ansi.cursor.erase())
 
         self._previouslySelectedTab = self.selectedTab
