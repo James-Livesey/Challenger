@@ -67,23 +67,50 @@ class RunningProcessScreen(ui.TabbedScreen):
 
         self.process = process
         self.page = self.process.getShortName()
-        self._lastProcessRead = None
+        self.displayDataAsTable = True
     
+    def renderData(self):
+        if self.displayDataAsTable:
+            if len(self.process.data) > 1:
+                print(ansi.cursor.goto(2, 1) + " " * ui.terminalSize["width"])
+                print(ansi.cursor.goto(2, 1) + ansi.colour.fg.bold(("  | " + ui.constructTableLine(self.process.data[0]["values"], self.process.tableColumnLengths))[:ui.terminalSize["width"]]))
+                
+                self.scrollPos = ui.scrollable(
+                    self.process.data[1:],
+                    y = 3,
+                    height = ui.terminalSize["height"] - 3,
+                    scrollPos = self.scrollPos,
+                    lineFunction = lambda line: processing.renderInCategoryColour(
+                        processing.getCategorySymbol(line["category"]) + " | " + ui.constructTableLine(line["values"], self.process.tableColumnLengths),
+                        line["category"]
+                    )
+                )
+        else:
+            self.scrollPos = ui.scrollable(
+                self.process.data,
+                scrollPos = self.scrollPos,
+                lineFunction = lambda line: line["raw"]
+            )
+        
+        ui.setBottomLineStatus(
+            ("[M] Raw mode" if self.displayDataAsTable else "[M] Table mode") +
+            " | Lines: {}".format(len(self.process.data))
+        )
+
     def updateTab(self, isChange = False):
         super().updateTab(isChange)
 
         if self.selectedTab == 1:
-            self._lastProcessRead = None
+            self.renderData()
     
     def update(self, key):
         super().update(key)
 
-        processRead = self.process.read().decode().split("\n")
+        self.process.update()
 
-        if processRead != self._lastProcessRead:
+        if key == "m":
+            self.displayDataAsTable = not self.displayDataAsTable
+
+        if self.process.hasNewData:
             if self.selectedTab == 1:
-                self.scrollPos = ui.scrollable(processRead, scrollPos = self.scrollPos)
-
-                ui.setBottomLineStatus("Lines: {}".format(len(processRead)))
-
-            self._lastProcessRead = processRead
+                self.renderData()

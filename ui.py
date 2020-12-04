@@ -78,7 +78,7 @@ def getKey(timeout = 1):
 def middle(text):
     return " " * (terminalSize["width"] // 2 - len(text) // 2) + text
 
-def scrollable(items, y = 2, height = terminalSize["height"] - 2, scrollPos = 0):
+def scrollable(items, y = 2, height = terminalSize["height"] - 2, scrollPos = 0, lineFunction = lambda line: line):
     if scrollPos < 0:
         scrollPos = 0
     
@@ -89,9 +89,29 @@ def scrollable(items, y = 2, height = terminalSize["height"] - 2, scrollPos = 0)
         print(ansi.cursor.goto(y + i, 1) + " " * terminalSize["width"])
 
         if i + scrollPos < len(items):
-            print(ansi.cursor.goto(y + i, 1) + str(items[i + scrollPos])[:terminalSize["width"]])
+            print(ansi.cursor.goto(y + i, 1) + str(lineFunction(items[i + scrollPos]))[:terminalSize["width"]])
     
     return scrollPos
+
+def constructTableLine(items, lengths, delimiter = " | "):
+    result = ""
+
+    while len(items) > len(lengths):
+        lengths.append(10)
+    
+    while len(lengths) > len(items):
+        items.append("")
+
+    for i in range(0, len(items)):
+        if len(items[i]) > lengths[i]:
+            result += items[i][:lengths[i]]
+        else:
+            result += items[i] + (" " * (lengths[i] - len(items[i])))
+        
+        if i < len(items) - 1:
+            result += delimiter
+    
+    return result
 
 class Screen:
     def __init__(self):
