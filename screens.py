@@ -67,17 +67,13 @@ class RunningProcessScreen(ui.TabbedScreen):
 
         self.process = process
         self.page = self.process.getShortName()
-        self._lastProcessRead = ""
+        self._lastProcessRead = None
     
     def updateTab(self, isChange = False):
         super().updateTab(isChange)
 
         if self.selectedTab == 1:
-            processRead = self.process.read().decode().split("\n")
-
-            self.scrollPos = ui.scrollable(processRead, scrollPos = self.scrollPos)
-
-            self._lastProcessRead = processRead
+            self._lastProcessRead = None
     
     def update(self, key):
         super().update(key)
@@ -87,5 +83,7 @@ class RunningProcessScreen(ui.TabbedScreen):
         if processRead != self._lastProcessRead:
             if self.selectedTab == 1:
                 self.scrollPos = ui.scrollable(processRead, scrollPos = self.scrollPos)
+
+                ui.setBottomLineStatus("Lines: {}".format(len(processRead)))
 
             self._lastProcessRead = processRead
