@@ -7,3 +7,78 @@
     *   Press Enter to launch a process for Challenger to inspect.
         Challenger will then ask you for the process's path and a filename
         to write the process's output to.
+    *   Press Backspace to exit a screen and return back to the previous screen.
+    *   Press Shift + / on some screens to show that screen's keyboard
+        shortcuts.
+
+INTRODUCTION
+
+Challenger is a program designed to benchmark the performance of non-halting
+output-oriented programs. Programs which are designed to interface with
+Challenger must output their results in a CSV-like format as detailed in this
+document.
+
+LAUNCHING A PROCESS
+
+To launch a process, press the Enter key on the welcome screen. You will be
+asked to enter the path to the executable and the output file to log the process
+output into. For example, to launch a system-wide process called "primefind" and
+store its output to outputs/primes.txt, the following must be typed in:
+
+    Executable path: /usr/bin/primefind
+    File to log output to: outputs/primes.txt
+
+Once this is entered, the process will be run and the running process screen
+will be shown.
+
+OUTPUT FORMAT
+
+To be read by Challenger in the most effective way, programs must output their
+results in a format which is a superset of the comma-separated value format.
+
+Firstly, programs must output the header as the first line. One such example is:
+
+    selected, total
+
+This example first line will tell Challenger to construct a two-column table
+with the headers "selected" and "total". Once this is done, programs can then
+begin to output their data as comma-separated values. Following our example:
+
+    103, 260
+
+This example will add two values in a new row on the table, with the first
+column being 103, and the second being 260. Strings can also be inserted as
+comma separated values. If a string contains a comma, the string must be wrapped
+around in quote marks ("), for example:
+
+    "apple, banana, pear", £1.20
+
+This example will add "apple, banana, pear" to the first column in a new row,
+and "£1.20" in the second.
+
+To escape quote marks, type two in a row ("").
+
+CATEGORIES
+
+Challenger also utilises a system called categories. Normally, Challenger
+interprets lines starting with a hash symbol (#) to be a comment, however, if a
+number between 1 and 9 inclusive is written straight after the hash symbol,
+Challenger interprets the line to belong to a certain category. For example:
+
+    #1 18, 24
+
+This example will create a new row with values 18 and 24. The row will also be
+given category 1.
+
+Categories are displayed in the table mode with different colours so that they
+can easily be differentiated. Those colours are:
+
+    *   Red for categories 1, 5 and 9
+    *   Green for categories 2 and 6
+    *   Blue for categories 3 and 7
+    *   Yellow for categories 4 and 8
+
+The colours may appear differently depending on your terminal's configuration.
+
+Categories can also be filtered so that only certain data is shown, with the
+rest being hidden.

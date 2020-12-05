@@ -53,13 +53,29 @@ class WelcomeScreen(ui.TabbedScreen):
                 newProcess.start()
 
                 processing.processes.append(newProcess)
-
-                runningProcessScreen = RunningProcessScreen(newProcess)
-
-                runningProcessScreen.start()
+                self.open(RunningProcessScreen(newProcess))
             except FileNotFoundError:
                 ui.setBottomLineError("Cannot find executable at given path")
                 print(ansi.cursor.goto(6, 1), end = "")
+    
+    def goodbye(self):
+        raise KeyboardInterrupt
+
+class KeyboardShortcutsScreen(ui.OverlayScreen):
+    def __init__(self, shortcutsPath):
+        super().__init__()
+
+        shortcutsFile = open(shortcutsPath, "r")
+        self.shortcuts = shortcutsFile.read().split("\n")
+
+        shortcutsFile.close()
+    
+    def render(self):
+        super().render()
+
+        for i in range(self.bottom, self.bottom + self.height - 2):
+            if i - self.bottom < len(self.shortcuts):
+                print(ansi.cursor.goto(ui.terminalSize["height"] - self.height - self.bottom + i, 3) + ansi.colour.bg.blue(ansi.colour.fg.white(self.shortcuts[i - self.bottom][:(ui.terminalSize["width"] - 4)])))
 
 class RunningProcessScreen(ui.TabbedScreen):
     def __init__(self, process):
@@ -118,6 +134,9 @@ class RunningProcessScreen(ui.TabbedScreen):
         
         if key == "a":
             self.autoscrollToBottom = not self.autoscrollToBottom
+        
+        if key == "?":
+            self.open(KeyboardShortcutsScreen("docs/shortcuts/data.txt"))
 
         if self.process.hasNewData:
             if self.selectedTab == 1:

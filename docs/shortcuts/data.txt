@@ -1,0 +1,2 @@
+[M] Toggle table mode
+[A] Toggle autoscroll

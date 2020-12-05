@@ -55,9 +55,7 @@ def getKey(timeout = 1):
     try:
         tty.setraw(fileno)
 
-        i = select.select([sys.stdin], [], [], timeout)[0]
-
-        if i:
+        if select.select([sys.stdin], [], [], timeout)[0]:
             char = sys.stdin.read(1)
 
             if char == "\x1B":
@@ -115,26 +113,38 @@ def constructTableLine(items, lengths, delimiter = " | "):
 
 class Screen:
     def __init__(self):
+        self.running = False
         self.scrollPos = 0
     
     def render(self):
         print(ansi.cursor.erase(2), end = "")
 
     def update(self, key):
+        if key == "\x7F":
+            self.running = False
+
+            return
         if key == arrowKeys.UP:
             self.scrollPos -= 1
         elif key == arrowKeys.DOWN:
             self.scrollPos += 1
 
     def start(self):
+        self.running = True
+
         self.render()
 
-        while True:
+        while self.running:
             self.update(getKey())
+        
+        self.goodbye()
 
     def open(self, screen):
         screen.start()
         self.render()
+    
+    def goodbye(self):
+        pass
 
 class TabbedScreen(Screen):
     def __init__(self, tabs, selectedTab = 0, page = "Challenger"):
@@ -164,6 +174,7 @@ class TabbedScreen(Screen):
     def render(self):
         super().render()
 
+        self.forceTabUpdate()
         self.updateTab()
 
     def update(self, key):
@@ -186,3 +197,14 @@ class TabbedScreen(Screen):
                 self.selectedTab = 0
             
             self.updateTab(True)
+
+class OverlayScreen(Screen):
+    def __init__(self, height = 10, bottom = 2):
+        super().__init__()
+
+        self.height = height
+        self.bottom = bottom
+    
+    def render(self):
+        for i in range(self.bottom, self.bottom + self.height):
+            print(ansi.cursor.goto(terminalSize["height"] - i, 2) + ansi.colour.bg.blue(" " * (terminalSize["width"] - 2)))
