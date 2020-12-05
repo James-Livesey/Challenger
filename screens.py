@@ -68,12 +68,12 @@ class RunningProcessScreen(ui.TabbedScreen):
         self.process = process
         self.page = self.process.getShortName()
         self.displayDataAsTable = True
-    
+
     def renderData(self):
         if self.displayDataAsTable:
             if len(self.process.data) > 1:
                 print(ansi.cursor.goto(2, 1) + " " * ui.terminalSize["width"])
-                print(ansi.cursor.goto(2, 1) + ansi.colour.fg.bold(("  | " + ui.constructTableLine(self.process.data[0]["values"], self.process.tableColumnLengths))[:ui.terminalSize["width"]]))
+                print(ansi.cursor.goto(2, 1) + ansi.colour.fg.bold(("  | " + ui.constructTableLine(self.process.data[0]["values"], self.process.tableColumnLengths))[:ui.terminalSize["width"]] + " |"))
                 
                 self.scrollPos = ui.scrollable(
                     self.process.data[1:],
@@ -81,7 +81,7 @@ class RunningProcessScreen(ui.TabbedScreen):
                     height = ui.terminalSize["height"] - 3,
                     scrollPos = self.scrollPos,
                     lineFunction = lambda line: processing.renderInCategoryColour(
-                        processing.getCategorySymbol(line["category"]) + " | " + ui.constructTableLine(line["values"], self.process.tableColumnLengths),
+                        processing.getCategorySymbol(line["category"]) + " | " + ui.constructTableLine(line["values"], self.process.tableColumnLengths) + " | " + ansi.colour.fg.darkgrey(processing.formatTimestamp(line["timestamp"])),
                         line["category"]
                     )
                 )

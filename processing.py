@@ -2,6 +2,7 @@ import subprocess
 import pathlib
 import ansi
 import ansi.colour
+import datetime
 
 processes = []
 
@@ -67,6 +68,9 @@ def parseCommaSeparatedValues(line):
 
     return {"raw": line, "category": category, "values": result}
 
+def formatTimestamp(timestamp):
+    return "{0:%Y/%m/%d %H:%M:%S}".format(timestamp)
+
 class Process:
     def __init__(self, executable, outputFile):
         self.executable = executable
@@ -108,6 +112,7 @@ class Process:
                 continue
 
             values = parseCommaSeparatedValues(rawData[i])
+            values["timestamp"] = datetime.datetime.now()
 
             self.data.append(values)
 
