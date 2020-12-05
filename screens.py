@@ -68,6 +68,7 @@ class RunningProcessScreen(ui.TabbedScreen):
         self.process = process
         self.page = self.process.getShortName()
         self.displayDataAsTable = True
+        self.autoscrollToBottom = True
 
     def renderData(self):
         if self.displayDataAsTable:
@@ -85,6 +86,9 @@ class RunningProcessScreen(ui.TabbedScreen):
                         line["category"]
                     )
                 )
+
+                if self.autoscrollToBottom:
+                    self.scrollPos = len(self.process.data[1:])
         else:
             self.scrollPos = ui.scrollable(
                 self.process.data,
@@ -93,7 +97,8 @@ class RunningProcessScreen(ui.TabbedScreen):
             )
         
         ui.setBottomLineStatus(
-            ("[M] Raw mode" if self.displayDataAsTable else "[M] Table mode") +
+            ("[M]" if self.displayDataAsTable else " M ") +
+            ("[A]" if self.autoscrollToBottom else " A ") +
             " | Lines: {}".format(len(self.process.data))
         )
 
@@ -110,6 +115,9 @@ class RunningProcessScreen(ui.TabbedScreen):
 
         if key == "m":
             self.displayDataAsTable = not self.displayDataAsTable
+        
+        if key == "a":
+            self.autoscrollToBottom = not self.autoscrollToBottom
 
         if self.process.hasNewData:
             if self.selectedTab == 1:
