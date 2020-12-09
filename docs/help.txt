@@ -8,7 +8,7 @@
         Challenger will then ask you for the process's path and a filename
         to write the process's output to.
     *   Press Backspace to exit a screen and return back to the previous screen.
-    *   Press Shift + / on some screens to show that screen's keyboard
+    *   Press Shift + / on some screens to show a list of that screen's keyboard
         shortcuts.
 
 INTRODUCTION
